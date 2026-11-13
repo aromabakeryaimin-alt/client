@@ -561,6 +561,7 @@
 
     onAuthStateChanged(auth, async (user) => {
       if (user) {
+        try {
         if(user.email === 'aromabakery.ainim@gmail.com') { 
           window.showSystemAlert('管理員帳戶請由管理後台登入。', () => { signOut(auth); }); 
           return; 
@@ -703,6 +704,14 @@
             container.appendChild(card);
           });
         });
+        } catch (error) {
+          console.error('Customer auth initialization failed:', error);
+          const code = error && error.code ? error.code : 'unknown';
+          const message = error && error.message ? error.message : '未知錯誤';
+          window.showSystemAlert(
+            'Google 帳戶已登入，但會員資料載入失敗。\n錯誤代碼：' + code + '\n原因：' + message + '\n\n請檢查 Realtime Database Rules 是否允許已登入會員讀取自己的 users/' + user.uid + ' 資料。'
+          );
+        }
       } else {
         currentUserUid = null;
         currentUserData = null;
