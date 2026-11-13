@@ -1160,7 +1160,7 @@
     window.handleCustomerLogin = function() {
       signInWithPopup(auth, googleProvider).catch((error) => {
         console.error('Google sign-in failed:', error);
-        window.showSystemAlert('Google 登入失敗，請確認已啟用 Google 登入及授權網域設定。');
+        window.showSystemAlert('Google 登入失敗：' + (error.code || 'unknown') + '\n' + (error.message || '請檢查 Firebase Authentication 設定。'));
       });
     };
     window.handleCustomerRegister = async function(e) {
